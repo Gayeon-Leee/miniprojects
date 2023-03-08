@@ -37,7 +37,6 @@ class qtApp(QWidget):
         else:
             api = NaverApi() # NaverApi 클래스 객체 생성
             node = 'news' # movie 로 변경하면 영화검색
-            outputs = [] # 결과 담을 리스트 변수
             display = 100
 
             result = api.get_naver_search(node, search, 1, display)
