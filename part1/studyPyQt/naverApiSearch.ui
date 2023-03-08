@@ -30,7 +30,7 @@
   </property>
   <property name="font">
    <font>
-    <family>맑은 고딕</family>
+    <family>나눔고딕</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -45,13 +45,23 @@
      <height>70</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <family>나눔고딕</family>
+    </font>
+   </property>
    <layout class="QVBoxLayout" name="searchLayout">
     <item>
      <widget class="QGroupBox" name="groupBox">
+      <property name="font">
+       <font>
+        <family>나눔고딕</family>
+       </font>
+      </property>
       <property name="title">
        <string>뉴스 검색</string>
       </property>
-      <widget class="QWidget" name="">
+      <widget class="QWidget" name="layoutWidget">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -59,6 +69,11 @@
          <width>581</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>나눔고딕</family>
+        </font>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
@@ -95,7 +110,7 @@
    </property>
    <layout class="QVBoxLayout" name="resultLayout">
     <item>
-     <widget class="QListView" name="lsvResult"/>
+     <widget class="QTableWidget" name="tblResult"/>
     </item>
    </layout>
   </widget>
