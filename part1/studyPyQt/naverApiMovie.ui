@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>400</height>
+    <width>800</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,14 +18,14 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>640</width>
-    <height>400</height>
+    <width>800</width>
+    <height>500</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>640</width>
-    <height>400</height>
+    <width>800</width>
+    <height>500</height>
    </size>
   </property>
   <property name="font">
@@ -41,8 +41,8 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>620</width>
-     <height>70</height>
+     <width>781</width>
+     <height>71</height>
     </rect>
    </property>
    <property name="font">
@@ -65,9 +65,9 @@
        <property name="geometry">
         <rect>
          <x>20</x>
-         <y>24</y>
-         <width>581</width>
-         <height>31</height>
+         <y>14</y>
+         <width>741</width>
+         <height>51</height>
         </rect>
        </property>
        <property name="font">
@@ -104,8 +104,8 @@
     <rect>
      <x>10</x>
      <y>90</y>
-     <width>621</width>
-     <height>301</height>
+     <width>781</width>
+     <height>401</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="resultLayout">
