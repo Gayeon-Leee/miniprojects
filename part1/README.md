@@ -27,6 +27,7 @@
   - MySQL 8.0 연동
   - pymysql 모듈 사용
   - PyQt5 / Qt Designer
+  
 ![주소록앱1](https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/AddressBook01.png)
 
 ![주소록앱2](https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/AddressBook02.png)
