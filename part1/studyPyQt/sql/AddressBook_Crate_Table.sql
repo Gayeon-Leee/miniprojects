@@ -1,4 +1,4 @@
-
+-- MySQL용
 CREATE TABLE addressbook (
   Idx int NOT NULL AUTO_INCREMENT COMMENT 'PK 자동증가',
   Fullname varchar(50)  NOT NULL COMMENT '이름',
