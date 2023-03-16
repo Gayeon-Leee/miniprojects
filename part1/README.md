@@ -59,9 +59,18 @@
 - 쓰레드 사용법
   - GUI와 처리시간이 긴 로직을 실행하면 반드시 쓰레드 사용
 
-- 이메일 보내기 앱
+![쓰레드비교](https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/threadApp.png)
+
+
+- 이메일 전송, 대량메일 전송
+
+- PyGame
 
 
 ## 미니프로젝트 실습
+
+- 차량 정보 앱 만들기
+
+[팀리포지토리]()
 
 
