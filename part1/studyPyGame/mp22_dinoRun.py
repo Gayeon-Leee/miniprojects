@@ -6,8 +6,9 @@ import random
 pygame.init()
 
 ASSETS = './studyPyGame/Assets/'
-SCREEN_WIDTH = 1100 # 게임 윈도우 넓이 1100으로 변수화
-SCREEN = pygame.display.set_mode((SCREEN_WIDTH, 600))
+SCREEN_WIDTH = 1100 # 게임 윈도우 크기 변수화
+SCREEN_HEIGHT = 600
+SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 icon = pygame.image.load('./studyPyGame/dinoRun2.png')
 pygame.display.set_icon(icon)
 # 배경이미지 로드
@@ -18,6 +19,8 @@ RUNNING = [pygame.image.load(f'{ASSETS}Dino/DinoRun1.png'),
 DUCKING = [pygame.image.load(f'{ASSETS}Dino/DinoDuck1.png'), 
            pygame.image.load(f'{ASSETS}Dino/DinoDuck2.png')]
 JUMPING = pygame.image.load(f'{ASSETS}Dino/DinoJump.png')   # jump는 이미지가 하나기 때문에 배열처리하면 오류남
+START = pygame.image.load(f'{ASSETS}Dino/DinoStart.png')    # 첫 시작 이미지
+DEAD = pygame.image.load(f'{ASSETS}Dino/DinoDead.png')  # 죽었을때 이미지
 # 구름 이미지
 CLOUD = pygame.image.load(f'{ASSETS}Other/Cloud.png')
 # 익룡 이미지
@@ -158,7 +161,7 @@ class SmallCactus(Obstacle): # 장애물 클래스 상속받는 작은선인장 
         self.rect.y = 325
 
 def main():
-    global game_speed, x_pos_bg, y_pos_bg, points, obstacles
+    global game_speed, x_pos_bg, y_pos_bg, points, obstacles, font
     x_pos_bg = 0
     y_pos_bg = 380  # 배경화면의 위치
     points = 0  # 게임점수
@@ -167,7 +170,8 @@ def main():
     dino = Dino()   # 공룡객체
     cloud = Cloud() # 구름객체
     game_speed = 14
-    obstacles = []
+    obstacles = []  # 장애물 리스트
+    death_count = 0
 
     font = pygame.font.Font(f'{ASSETS}NanumGothicBold.ttf', 20)
 
@@ -223,15 +227,54 @@ def main():
             elif random.randint(0, 2) == 2: # 익룡
                 obstacles.append(Bird(BIRD)) # Bird 클래스로 BIRD 이미지 받아서 쓴다는 것
         
-        for obs in obstacles:
+        for obs in obstacles:   
             obs.draw(SCREEN)
             obs.update()
             if dino.dino_rect.colliderect(obs.rect): # 충돌감지.. Collision Detection
-                pygame.draw.rect(SCREEN, (255, 0, 0), dino.dino_rect, 3)
+                # pygame.draw.rect(SCREEN, (255, 0, 0), dino.dino_rect, 3)  # 안죽고 빨간 네모로 충돌한거 보여주는 코드임
+                pygame.time.delay(1500) # 1.5초 딜레이
+                death_count = 1
+                menu(death_count)   # 죽은 후 메인 메뉴 화면으로 전환
 
         
         clock.tick(30)  # 30 기본.. 수가 커질수록 공룡 움직임 빨라짐
         pygame.display.update() # 초당 30번 update 수행
 
+def menu(death_count):
+    global points, font
+    run = True
+    font = pygame.font.Font(f'{ASSETS}NanumGothicBold.ttf', 20)
+
+    while run:
+        SCREEN.fill((255,255,255))  # 화면 흰 색으로 채우기
+
+        if death_count == 0:    # 초기화면
+            text = font.render('시작하려면 아무 키나 누르세요', True, (83,83,83))
+            SCREEN.blit(START, (SCREEN_WIDTH // 2 -20, SCREEN_HEIGHT // 2 - 140))
+        elif death_count > 0:   # 게임하다 죽으면
+            text = font.render('재시작하려면 아무 키나 누르세요', True, (83,83,83))
+            score = font.render(f'SCORE : {points}', True, (83,83,83))
+            scoreRect = score.get_rect()
+            scoreRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50) # 윈도우 중앙보다 약간 아래에 위치값 만들어주는 것
+            SCREEN.blit(score, scoreRect)
+            SCREEN.blit(DEAD, (SCREEN_WIDTH // 2 -20, SCREEN_HEIGHT // 2 - 140))
+
+        
+        textRect = text.get_rect()
+        textRect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        SCREEN.blit(text, textRect)
+        
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.quit()   # 완전 종료
+            if event.type == pygame.KEYDOWN:
+                main()
+
+
+
+
 if __name__ == '__main__':
-    main()
+    menu(death_count=0)

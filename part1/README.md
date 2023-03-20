@@ -69,6 +69,20 @@
 
 <img src="https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/dinoRun.png" width="780" />
 
+<img src="https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/dinoRun2.png" width="780" />
+
+게임 화면
+
+
+- 전국 대학교 위치맵
+  - Pandas
+  - folium
+  - PyQt
+    - QWebEnginView 추가
+
+<img src="https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/folium_gui.png" width="780" />
+
+
 
 
 
