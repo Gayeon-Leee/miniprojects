@@ -82,7 +82,11 @@
 
 <img src="https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/folium_gui.png" width="780" />
 
+- 계산기 앱
+  - PyQt
+  - 16개 signal을 한 개의 slot 함수로 처리
 
+<img src="https://raw.githubusercontent.com/Gayeon-Leee/miniprojects/main/Images/calc.png" width="250" />
 
 
 
