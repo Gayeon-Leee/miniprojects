@@ -27,6 +27,13 @@
                     Style="{StaticResource MahApps.Styles.Button.Dialogs.Accent}" Click="BtnConnect_Click"/>
         </StackPanel>
 
-        <RichTextBox x:Name="RtbLog" Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Visible"/>
+        <RichTextBox x:Name="RtbLog" Grid.Row="1" Margin="10" VerticalScrollBarVisibility="Visible">
+            <!-- 줄간격 줄이는 resource -->
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
     </Grid>
 </mah:MetroWindow>

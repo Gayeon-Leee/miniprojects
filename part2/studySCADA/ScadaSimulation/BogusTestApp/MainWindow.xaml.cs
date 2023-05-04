@@ -36,7 +36,5 @@ namespace BogusTestApp
             var result = JsonConvert.SerializeObject(customers, Formatting.Indented); // Formatting.Indented : 들여쓰기
             RtbResult.Text = result;
         }
-
-       \
     }
 }
