@@ -91,6 +91,24 @@
                     </MenuItem>
                 </MenuItem>
             </Menu>
+
+            <ToolBarTray>
+                <ToolBar Style="{StaticResource MahApps.Styles.ToolBar}">
+                    <Button x:Name="BtnStartSubscribe" ToolTip="구독 시작">
+                        <iconPacks:PackIconJamIcons Kind="PlayCircleF"/>
+                    </Button>
+
+                    <Button x:Name="BtnStopSubscribe" ToolTip="구독 중지">
+                        <iconPacks:PackIconBootstrapIcons Kind="PauseCircleFill"/>
+                    </Button>
+
+                    <Separator/>
+
+                    <Button x:Name="BtnExitProgram" ToolTip="프로그램 끝내기">
+                        <iconPacks:PackIconForkAwesome Kind="SignOut"/>
+                    </Button>
+                </ToolBar>
+            </ToolBarTray>
         </StackPanel>
 
         <Grid Grid.Row="1">
