@@ -28,7 +28,7 @@
                         <iconPacks:PackIconJamIcons Kind="FileF"/>
                     </MenuItem.Icon>
 
-                    <MenuItem x:Name="MnuStartSubxcribe" Header="시작">
+                    <MenuItem x:Name="MnuStartSubxcribe" Header="시작" Click="MnuStartSubxcribe_Click">
                         <MenuItem.Icon>
                             <iconPacks:PackIconJamIcons Kind="PlayCircleF"/>
                         </MenuItem.Icon>

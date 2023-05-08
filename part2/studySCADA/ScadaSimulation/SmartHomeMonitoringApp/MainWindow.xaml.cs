@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using SmartHomeMonitoringApp.Views;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,7 +32,7 @@ namespace SmartHomeMonitoringApp
         {
             // <Frame> ==> Page.xaml
             // <Contentcontrol> ==> UserControl.xaml
-            ActiveItem.Content = new Views.DataBaseControl();
+            // ActiveItem.Content = new Views.DataBaseControl();
         }
 
         // 끝내기 버튼 이벤트 핸들러
@@ -40,6 +41,20 @@ namespace SmartHomeMonitoringApp
             Process.GetCurrentProcess().Kill(); // 작업관리자에서 프로세스 종료하는거랑 같음
             
             // Environment.Exit(0); 이걸로 종료해도 되는데 위에거보다 느림
+        }
+
+        // MQTT 시작메뉴 클릭 이벤트 핸들러
+        private void MnuStartSubxcribe_Click(object sender, RoutedEventArgs e)
+        {
+            var mqttPopWin = new MqttPopupWindow();
+            mqttPopWin.Owner = this;
+            mqttPopWin.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            var result = mqttPopWin.ShowDialog();
+
+            if (result == true)
+            {
+                ActiveItem.Content = new Views.DataBaseControl();
+            }
         }
     }
 }
