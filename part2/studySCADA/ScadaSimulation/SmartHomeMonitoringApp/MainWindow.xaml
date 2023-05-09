@@ -7,7 +7,8 @@
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="SmartHome Monitoring System" Height="450" Width="800" Loaded="MetroWindow_Loaded">
+        Title="SmartHome Monitoring System" Height="450" Width="800" MinHeight="450" MinWidth="670"
+        Loaded="MetroWindow_Loaded" Closing="MetroWindow_Closing">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
             <iconPacks:PackIconSimpleIcons Kind="HomeAssistant" Width="24" Margin="5,7,0,0" Foreground="White"/>
@@ -34,11 +35,11 @@
                         </MenuItem.Icon>
                     </MenuItem>
 
-                    <MenuItem x:Name="MnuStopSubxcribe" Header="중지">
+                    <!--<MenuItem x:Name="MnuStopSubxcribe" Header="중지">
                         <MenuItem.Icon>
                             <iconPacks:PackIconBootstrapIcons Kind="PauseCircleFill"/>
                         </MenuItem.Icon>
-                    </MenuItem>
+                    </MenuItem>-->
 
                     <Separator/>
 
@@ -94,17 +95,18 @@
 
             <ToolBarTray>
                 <ToolBar Style="{StaticResource MahApps.Styles.ToolBar}">
-                    <Button x:Name="BtnStartSubscribe" ToolTip="구독 시작">
+                    <Button x:Name="BtnStartSubscribe" ToolTip="구독 시작" Click="MnuStartSubxcribe_Click">
                         <iconPacks:PackIconJamIcons Kind="PlayCircleF"/>
                     </Button>
+                    <!-- 새 이벤트 핸들러 안만들고 기존에 만들어둔거 사용함 -->
 
-                    <Button x:Name="BtnStopSubscribe" ToolTip="구독 중지">
+                    <!--<Button x:Name="BtnStopSubscribe" ToolTip="구독 중지">
                         <iconPacks:PackIconBootstrapIcons Kind="PauseCircleFill"/>
-                    </Button>
+                    </Button>-->
 
                     <Separator/>
 
-                    <Button x:Name="BtnExitProgram" ToolTip="프로그램 끝내기">
+                    <Button x:Name="BtnExitProgram" ToolTip="프로그램 끝내기" Click="BtnExitProgram_Click">
                         <iconPacks:PackIconForkAwesome Kind="SignOut"/>
                     </Button>
                 </ToolBar>

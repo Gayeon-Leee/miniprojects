@@ -1,7 +1,10 @@
 ﻿using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using SmartHomeMonitoringApp.Logics;
 using SmartHomeMonitoringApp.Views;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -53,8 +56,45 @@ namespace SmartHomeMonitoringApp
 
             if (result == true)
             {
-                ActiveItem.Content = new Views.DataBaseControl();
+                var userControl = new Views.DataBaseControl();
+                ActiveItem.Content = userControl;
+                StsSelScreen.Content = "DataBase Monitoring";
             }
+        }
+
+        private async void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // e.Cancle을 true로 하고 시작해야함
+            e.Cancel = true;
+
+            var mySettings = new MetroDialogSettings
+                                {
+                                    AffirmativeButtonText = "끝내기",
+                                    NegativeButtonText = "취소",
+                                    AnimateShow = true,
+                                    AnimateHide = true
+                                };
+
+            var result = await this.ShowMessageAsync("프로그램을 끝내기", "프로그램을 끝내시겠습니까?", MessageDialogStyle.AffirmativeAndNegative, mySettings);
+
+            if (result == MessageDialogResult.Negative)
+            {
+                e.Cancel = true;
+            }
+            else if (result == MessageDialogResult.Affirmative) // 프로그램 종료
+            {
+                if (Commons.MQTT_CLIENT != null && Commons.MQTT_CLIENT.IsConnected)
+                {
+                    Commons.MQTT_CLIENT.Disconnect();
+                }
+                Process.GetCurrentProcess().Kill(); // 제일 확실한 끝내기 
+            }
+        }
+
+        private void BtnExitProgram_Click(object sender, RoutedEventArgs e)
+        {
+            // 윈도우 클로징 이벤트 핸들러 호출
+            this.MetroWindow_Closing(sender, new CancelEventArgs());
         }
     }
 }

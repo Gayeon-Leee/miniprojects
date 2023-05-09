@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,6 +28,8 @@ namespace SmartHomeMonitoringApp.Views
     public partial class DataBaseControl : UserControl
     {
         public bool IsConnected { get; set; } // 접속 여부 확인하기 위함
+
+        // Thread MqttThred { get; set; } // 없으면 UI 컨트롤 어려워짐
 
 
         public DataBaseControl()
@@ -68,20 +71,36 @@ namespace SmartHomeMonitoringApp.Views
                         UpdateLog(">>> MQTT Broker Connected");
 
                         BtnConnDB.IsChecked = true;
+                        BtnConnDB.Content = "MQTT 연결중";
                         IsConnected = true; // 예외 발생하면 IsConnected true X => try문 안에 넣는 것
 
                     }
                 }
-                catch
+                catch(Exception ex)
                 {
-                    // pass
+                    UpdateLog($"!!! MQTT Error 발생 : {ex.Message}");
                 }
 
             }
-            else
+            else // 접속 끊을 때
             {
-                BtnConnDB.IsChecked = false;
-                IsConnected = false;
+                try
+                {
+                    if (Commons.MQTT_CLIENT.IsConnected)
+                    {
+                        Commons.MQTT_CLIENT.MqttMsgPublishReceived -= MQTT_CLIENT_MqttMsgPublishReceived;
+                        Commons.MQTT_CLIENT.Disconnect();
+                        UpdateLog(">>> MQTT Broker Disconnected...");
+
+                        BtnConnDB.IsChecked = false;
+                        BtnConnDB.Content = "MQTT 연결 종료";
+                        IsConnected = false;
+                    }
+                }
+                catch(Exception ex)
+                {
+                    UpdateLog($"!!! MQTT Error 발생 : {ex.Message}");
+                }
             }
         }
 
@@ -118,12 +137,27 @@ namespace SmartHomeMonitoringApp.Views
                     {
                         if (conn.State == System.Data.ConnectionState.Closed) conn.Open();
                         {
-                            string insQuery = "INSERT INTO smarthomesensor";
+                            string insQuery = @"INSERT INTO smarthomesensor
+                                                            (Home_Id,
+                                                            Room_Name,
+                                                            Sensing_DateTime,
+                                                            Temp,
+                                                            Humid)
+                                                           VALUES
+                                                            (@Home_Id,
+                                                            @Room_Name,
+                                                            @Sensing_DateTime,
+                                                            @Temp,
+                                                            @Humid)";
 
                             MySqlCommand cmd = new MySqlCommand(insQuery, conn);
                             cmd.Parameters.AddWithValue("@Home_Id", currValue["Home_Id"]);
-                            // .. 파라미터 5개 정리필
-                            if(cmd.ExecuteNonQuery() == 1)
+                            cmd.Parameters.AddWithValue("@Room_Name", currValue["Room_Name"]);
+                            cmd.Parameters.AddWithValue("@Sensing_DateTime", currValue["Sensing_DateTime"]);
+                            cmd.Parameters.AddWithValue("@Temp", currValue["Temp"]);
+                            cmd.Parameters.AddWithValue("@Humid", currValue["Humid"]);
+
+                            if (cmd.ExecuteNonQuery() == 1)
                             {
                                 UpdateLog(">>> DB Insert succeed");
                             }
@@ -137,7 +171,7 @@ namespace SmartHomeMonitoringApp.Views
                 catch (Exception ex)
                 {
 
-                    UpdateLog($"!!! Error 발생 : {ex.Message}");
+                    UpdateLog($"!!! DB Error 발생 : {ex.Message}");
                 }
             }
         }
