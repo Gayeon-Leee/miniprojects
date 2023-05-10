@@ -47,14 +47,28 @@ namespace SmartHomeMonitoringApp.Views
 
             IsConnected = false; // 아직 접속 안됨
             BtnConnDB.IsChecked = false;
+
+            // 실시간 모니터링에서 넘어왔을때
+            if (Commons.MQTT_CLIENT != null && Commons.MQTT_CLIENT.IsConnected)
+            {
+                IsConnected = true;
+                BtnConnDB.IsChecked = true;
+                Commons.MQTT_CLIENT.MqttMsgPublishReceived += MQTT_CLIENT_MqttMsgPublishReceived;
+
+            }
         }
 
         // 토글버튼 클릭 이벤트 핸들러 (토글버튼은 한 번 누르면 on / 한 번 더 누르면 off 개념) 
         private void BtnConnDB_Click(object sender, RoutedEventArgs e)
         {
+           ConnectDB();
+        }
+
+        private void ConnectDB()
+        {
             if (IsConnected == false)
             {
-               
+
                 // Mqtt 브로커 생성
                 Commons.MQTT_CLIENT = new uPLibrary.Networking.M2Mqtt.MqttClient(Commons.BROKERHOST);
 
@@ -66,8 +80,8 @@ namespace SmartHomeMonitoringApp.Views
                         // Mqtt 접속
                         Commons.MQTT_CLIENT.MqttMsgPublishReceived += MQTT_CLIENT_MqttMsgPublishReceived;
                         Commons.MQTT_CLIENT.Connect("MONITOR"); // clientId = 모니터
-                        Commons.MQTT_CLIENT.Subscribe(new string[] {Commons.MQTTTOPIC}, 
-                                                      new byte[] {MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE}); // QOS는 네트워크 통신의 옵션. QOS_LEVEL_AT_LEAST_ONCE는 수신여부와 상관없이 한 번 보내는 것
+                        Commons.MQTT_CLIENT.Subscribe(new string[] { Commons.MQTTTOPIC },
+                                                      new byte[] { MqttMsgBase.QOS_LEVEL_AT_LEAST_ONCE }); // QOS는 네트워크 통신의 옵션. QOS_LEVEL_AT_LEAST_ONCE는 수신여부와 상관없이 한 번 보내는 것
                         UpdateLog(">>> MQTT Broker Connected");
 
                         BtnConnDB.IsChecked = true;
@@ -76,7 +90,7 @@ namespace SmartHomeMonitoringApp.Views
 
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     UpdateLog($"!!! MQTT Error 발생 : {ex.Message}");
                 }
@@ -97,7 +111,7 @@ namespace SmartHomeMonitoringApp.Views
                         IsConnected = false;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     UpdateLog($"!!! MQTT Error 발생 : {ex.Message}");
                 }

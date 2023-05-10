@@ -96,5 +96,23 @@ namespace SmartHomeMonitoringApp
             // 윈도우 클로징 이벤트 핸들러 호출
             this.MetroWindow_Closing(sender, new CancelEventArgs());
         }
+
+        private void MnuDataBaseMon_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveItem.Content = new Views.DataBaseControl();
+            StsSelScreen.Content = "DataBase Monitoring";
+        }
+
+        private void MnuRealTimeMon_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveItem.Content = new Views.RealTimeControl();
+            StsSelScreen.Content = "RealTime Monitoring";
+        }
+
+        private void MnuVisualization_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveItem.Content = new Views.VisualizationControl();
+            StsSelScreen.Content = "Visualization View";
+        }
     }
 }
