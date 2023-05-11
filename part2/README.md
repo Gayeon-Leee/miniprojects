@@ -11,3 +11,6 @@
 	- DB 데이터바인딩
 	- LiveCharts
 	- OxyChart
+	
+- SmartHome 시스템 문제점
+	- 실행 후 시간이 소요되면 UI 제어가 느려짐 - TextBox에 텍스트가 과도해서 발생
