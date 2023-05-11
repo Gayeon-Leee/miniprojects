@@ -29,8 +29,9 @@ namespace SmartHomeMonitoringApp.Views
     {
         public bool IsConnected { get; set; } // 접속 여부 확인하기 위함
 
-        // Thread MqttThred { get; set; } // 없으면 UI 컨트롤 어려워짐
+        Thread MqttThred { get; set; } // 없으면 UI 컨트롤 어려워짐
 
+        int MaxCount { get; set; } = 10; // 23.05.11 09:29 MQTT Subscribtion text 과도 문제 속도 저하를 잡기 위해 변수 추가
 
         public DataBaseControl()
         {
@@ -121,8 +122,17 @@ namespace SmartHomeMonitoringApp.Views
         private void UpdateLog(string msg)
         {
             this.Invoke(() => {
+                if(MaxCount <= 0)
+                {
+                    TxtLog.Text = string.Empty;
+                    TxtLog.Text += ">>> 문서 건수가 많아져서 초기화!\n";
+                    TxtLog.ScrollToEnd();
+                    MaxCount = 10; // 실제 운영시는 50으로 하더라도 테스트 할때는 10정도로 작은 숫자 넣어서 볼 것
+                }
+
                 TxtLog.Text += $"{msg}\n";
                 TxtLog.ScrollToEnd();
+                MaxCount--;
             });
         }
 

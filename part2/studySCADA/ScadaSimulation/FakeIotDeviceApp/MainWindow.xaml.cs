@@ -4,21 +4,10 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using uPLibrary.Networking.M2Mqtt;
 
 namespace FakeIotDeviceApp
@@ -32,6 +21,8 @@ namespace FakeIotDeviceApp
 
         MqttClient Client { get; set; }
         Thread MqttThread { get; set; }
+
+        int MaxCount { get; set; } = 50; // MQTT Publish json 데이터 건수 체크 변수 => 데이터 너무 많아지면 UI 제어 느려지는 문제 해결하기 위함
             
 
         public MainWindow()
@@ -93,13 +84,19 @@ namespace FakeIotDeviceApp
                     // 스레드와 UI스레드 간 충돌이 안나도록 변경
                     this.Invoke(new Action(() =>
                     {
+                        if (MaxCount <= 0) // MaxCount 부분 없으면 데이터가 계속 쌓여서 UI 제어 속도 느려짐. MaxCount 변수 설정하고 특정 건수 넘어가면 데이터 지우고 다시 기록
+                        {
+                            RtbLog.SelectAll();
+                            RtbLog.Selection.Text = string.Empty;
+                            MaxCount = 50;
+                            RtbLog.AppendText(">>> 문서 건수가 많아져서 초기화.\n");
+                        }
                         // RtbLog에 출력 => RichTextBox는 다른거보다 데이터 뿌리는거 좀 복잡함
                         RtbLog.AppendText($"{jsonValue}\n");
                         RtbLog.ScrollToEnd(); // 스크롤 제일 밑으로 보내기
+                        MaxCount--;
+
                     }));
-
-                    
-
                     // 1초동안 대기
                     Thread.Sleep(1000); 
                 }
