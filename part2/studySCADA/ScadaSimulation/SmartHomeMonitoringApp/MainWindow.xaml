@@ -78,6 +78,18 @@
                     <MenuItem.Icon>
                         <iconPacks:PackIconRemixIcon Kind="Brush2Fill"/>
                     </MenuItem.Icon>
+
+                    <MenuItem Header="테마">
+                        <MenuItem x:Name="MnuLightTheme" Header="Light" IsChecked="True" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                        <MenuItem x:Name="MnuDarkTheme" Header="Dark" IsChecked="False" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                    </MenuItem>
+
+                    <MenuItem Header="액센트">
+                        <MenuItem x:Name="MnuAccentAmber" Header="Amber" IsChecked="False" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                        <MenuItem x:Name="MnuAccentBlue" Header="Blue" IsChecked="False" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                        <MenuItem x:Name="MnuAccentBrown" Header="Brown" IsChecked="False" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                        <MenuItem x:Name="MnuAccentCobalt" Header="Cobalt" IsChecked="True" IsCheckable="True" Click="MnuThemeAccent_Checked"/>
+                    </MenuItem>
                 </MenuItem>
                 
                 <MenuItem Header="도움말">
@@ -85,7 +97,7 @@
                         <iconPacks:PackIconMaterial Kind="HelpBox"/>
                     </MenuItem.Icon>
 
-                    <MenuItem x:Name="MnuAbout" Header="이 프로그램">
+                    <MenuItem x:Name="MnuAbout" Header="이 프로그램" Click="MnuAbout_Click">
                         <MenuItem.Icon>
                             <iconPacks:PackIconOcticons Kind="Info"/>
                         </MenuItem.Icon>

@@ -1,24 +1,14 @@
-﻿using LiveCharts;
-using LiveCharts.Wpf;
+﻿using OxyPlot;
+using OxyPlot.Series;
 using MySql.Data.MySqlClient;
 using SmartHomeMonitoringApp.Logics;
-using SmartHomeMonitoringApp.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using OxyPlot.Legends;
 
 namespace SmartHomeMonitoringApp.Views
 {
@@ -53,7 +43,7 @@ namespace SmartHomeMonitoringApp.Views
                 conn.Open();
                 var dtQuery = @"SELECT F.Sensing_Date
                                  FROM(
-	                                SELECT DATE_FORMAT(Sensing_DateTime, '%y-%m-%d') AS Sensing_Date
+	                                SELECT DATE_FORMAT(Sensing_DateTime, '%Y-%m-%d') AS Sensing_Date
 	                                  FROM smarthomesensor
                                 ) AS F
                                 GROUP BY F.Sensing_Date
@@ -75,6 +65,7 @@ namespace SmartHomeMonitoringApp.Views
             // 입력검증 위한 변수
             bool isValid = true;
             string errorMsg = string.Empty;
+            
             // DB상에 있던 데이터 담는 변수
             DataSet ds = new DataSet(); 
 
@@ -134,19 +125,20 @@ namespace SmartHomeMonitoringApp.Views
                                                Humid
                                           FROM smarthomesensor
                                          WHERE UPPER(Room_Name) = @Room_Name    
-                                           AND DATE_FORMAT(Sensing_DateTime, '%Y-%m-%d') 
+                                           AND DATE_FORMAT(Sensing_DateTime, '%Y-%m-%d')
                                        BETWEEN @StartDate AND @EndDate";
                     // 41행에서 Divisons = new List<string> { "SELECT", "LIVING", "DINING", "BED", "BATH" }; 이렇게 받았기 때문에
                     // WHERE 절에 UPPER 써써 대문자로 검색해주는게 좋음
                     MySqlCommand cmd = new MySqlCommand(searchQuery, conn);
                     cmd.Parameters.AddWithValue("@Room_Name", CboRoomName.SelectedValue.ToString());
-                    cmd.Parameters.AddWithValue("@StartDate", DtpStart.ToString());
-                    cmd.Parameters.AddWithValue("@EndDate", DtpEnd.ToString());
+                    cmd.Parameters.AddWithValue("@StartDate", DtpStart.Text); 
+                    cmd.Parameters.AddWithValue("@EndDate", DtpEnd.Text);
+                    // DtpStart/End.ToString() 하면 데이터 안넘어옴!!!!! 파라미터에 값이 제대로 안들어가서 검색이 안되기 때문
                     MySqlDataAdapter adapter = new MySqlDataAdapter(cmd);
                     
                     adapter.Fill(ds, "smarthomesensor");
 
-                    // MessageBox.Show(ds.Tables["smarthomesensor"].Rows.Count.ToString(), "TotalData");  -> 데이터 넘어왔는지 개수 확인
+                    //MessageBox.Show(ds.Tables["smarthomesensor"].Rows.Count.ToString(), "TotalData"); // -> 데이터 넘어왔는지 개수 확인
                 }
             }
             catch(Exception ex)
@@ -156,34 +148,53 @@ namespace SmartHomeMonitoringApp.Views
             #endregion
 
             #region < DB에서 가져온 데이터 차트에 뿌리기 >
+            // Create the plot model
+            var tmp = new PlotModel { Title = $"{CboRoomName.SelectedValue} ROOM" }; // 선택한 방 이름이 타이틀로 나오게
+
+            var legend = new Legend
+            {
+                LegendBorder = OxyColors.DarkGray,
+                LegendBackground = OxyColor.FromArgb(150, 255, 255, 255),
+                LegendPosition = LegendPosition.TopRight,
+                LegendPlacement = LegendPlacement.Outside
+            };
+            tmp.Legends.Add(legend); // 범례 추가
+
+
+            // Create two line series (markers are hidden by default)
+            // 데이터가 있든 없든 차트에 반영되게 해야 데이터 없을 때 차트 안그림 -> 기본 설정을 아래 if문 안에 넣으면 데이터 없어도 이전 차트값 남아있음
+            var tempSeries = new LineSeries
+            {
+                Title = "Temperature(℃)",
+                MarkerType = MarkerType.Circle,
+                Color = OxyColors.DarkOrange // 라인 색상 변경
+            };
+            var humidSeries = new LineSeries
+            {
+                Title = "Humidity(%)",
+                MarkerType = MarkerType.Square,
+                Color = OxyColors.CornflowerBlue // 라인 색상 변경
+            };
+
+            // 개수가 있을때 차트에 그리기
             if (ds.Tables[0].Rows.Count > 0)
             {
-                /*
-                LineSeries tempSeries = new LineSeries
-                {
-                    Title = "Temp",
-                    Stroke = new SolidColorBrush(Colors.OrangeRed),
-                };
+                TotalDateCount = ds.Tables[0].Rows.Count;
 
-                LineSeries humidSeries = new LineSeries
-                {
-                    Title = "Humid",
-                    Stroke = new SolidColorBrush(Colors.Aqua),
-                };
-
-                IChartValues tempValues = new ChartValues<double>();
-                IChartValues humidValues = new ChartValues<double>();
-                */
-
+                var count = 0;
                 foreach (DataRow row in ds.Tables[0].Rows)
                 {
-                    Convert.ToDouble(row["Temp"]);
+                    tempSeries.Points.Add(new DataPoint(count++, Convert.ToDouble(row["Temp"])));
+                    humidSeries.Points.Add(new DataPoint(count++, Convert.ToDouble(row["Humid"])));
                 }
-
-                
-
-                
             }
+
+            tmp.Series.Add(tempSeries);
+            tmp.Series.Add(humidSeries);
+
+            OpvSmartHome.Model = tmp;
+
+            LblTotalCount.Content = $"검색데이터 {TotalDateCount}개";
             #endregion
         }
     }
