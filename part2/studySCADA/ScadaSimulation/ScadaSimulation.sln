@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MQTT Subscriber", "MQTT Sub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartHomeMonitoringApp", "SmartHomeMonitoringApp\SmartHomeMonitoringApp.csproj", "{9B7C2207-38FA-4BC9-9EC0-82AC9A7A9B87}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RaspberryPi Test", "RaspberryPi Test", "{A49E6018-F1F7-47A4-999C-82B23606EBA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpiMonitoringApp", "RPiMonitoringApp\RpiMonitoringApp.csproj", "{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,10 @@ Global
 		{9B7C2207-38FA-4BC9-9EC0-82AC9A7A9B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B7C2207-38FA-4BC9-9EC0-82AC9A7A9B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B7C2207-38FA-4BC9-9EC0-82AC9A7A9B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +49,7 @@ Global
 		{042E6D7E-20E8-4A70-ADFB-6F3CFAAC5743} = {66031F85-E8E9-4335-B575-2C1A77A813E0}
 		{2F3DF5E2-DE31-442D-926A-6A79C1B9C181} = {3C37C784-943A-4C13-80B4-B722D2179CD9}
 		{9B7C2207-38FA-4BC9-9EC0-82AC9A7A9B87} = {71479E2E-48CA-4EE2-8E40-FF4ADA3ED2F2}
+		{426C80FF-8A19-4F6C-9AE8-47D4F71A0F0A} = {A49E6018-F1F7-47A4-999C-82B23606EBA2}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {EADB0505-CFA4-4AFB-8FCB-7C3C357936AE}
